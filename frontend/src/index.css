@@ -1,0 +1,52 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html { font-family: "Source Sans 3", system-ui, sans-serif; }
+  body { @apply bg-paper text-ink antialiased; }
+  h1, h2, h3 { font-family: "Bricolage Grotesque", system-ui, sans-serif; }
+  :focus-visible { outline: 3px solid #5B3E96; outline-offset: 2px; }
+}
+
+@layer components {
+  .btn { @apply inline-flex items-center justify-center rounded-lg px-4 py-2 font-semibold transition-colors disabled:opacity-50 disabled:cursor-not-allowed; }
+  .btn-primary { @apply btn bg-jacaranda text-white hover:bg-jacaranda-deep; }
+  .btn-ghost { @apply btn border border-line bg-white text-ink hover:bg-jacaranda-mist; }
+  .field { @apply w-full rounded-lg border border-line bg-white px-3 py-2 text-ink placeholder:text-ink/45; }
+  .label { @apply mb-1 block text-sm font-semibold; }
+  .chip { @apply inline-flex items-center rounded-full border border-line bg-white px-3 py-1 text-sm; }
+
+  /* Glassmorphism: used on the search panel that floats over the map. */
+  .glass {
+    background: rgba(255, 255, 255, 0.92);
+    border: 1px solid rgba(255, 255, 255, 0.7);
+    box-shadow: 0 12px 40px rgba(20, 23, 28, 0.18);
+  }
+  @supports ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+    .glass {
+      background: rgba(255, 255, 255, 0.62);
+      -webkit-backdrop-filter: blur(16px) saturate(1.4);
+      backdrop-filter: blur(16px) saturate(1.4);
+    }
+  }
+}
+
+/* Map price pins (Leaflet divIcon HTML cannot use Tailwind classes reliably) */
+.leaflet-container { font-family: "Source Sans 3", system-ui, sans-serif; }
+.price-pin {
+  display: inline-block; min-width: 48px; padding: 4px 10px; border-radius: 999px;
+  background: #fff; color: #14171C; font-weight: 600; font-size: 13px; text-align: center;
+  border: 2px solid #5B3E96; box-shadow: 0 2px 8px rgba(20, 23, 28, 0.25); white-space: nowrap;
+}
+.price-pin--featured { border-color: #F2B705; }
+.price-pin--active { background: #5B3E96; color: #fff; }
+.drop-pin {
+  width: 22px; height: 22px; border-radius: 50% 50% 50% 0; transform: rotate(-45deg);
+  background: #5B3E96; border: 3px solid #fff; box-shadow: 0 2px 8px rgba(20, 23, 28, 0.4);
+}
+
+/* One orchestrated moment: the search panel settles in once on load. */
+@keyframes panel-in { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+.panel-in { animation: panel-in 500ms ease-out both; }
+@media (prefers-reduced-motion: reduce) { .panel-in { animation: none; } }
